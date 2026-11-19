@@ -1,0 +1,28 @@
+﻿@page
+@using System.Data.SqlClient;
+@{
+    String id = Request.Query["id"];
+    try
+    {
+        String conStr = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=OmniHealthcareDb;Integrated Security=True";
+        using (SqlConnection con = new SqlConnection(conStr))
+        {
+
+            con.Open();
+            String sqlQury = "DELETE FROM Patients WHERE id=@id";
+            using (SqlCommand cmd = new SqlCommand(sqlQury, con))
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+    }catch(Exception ex)
+    {
+        Console.WriteLine("Error: " + ex.Message);
+    }
+
+    Response.Redirect("/Patients/Index");
+}
